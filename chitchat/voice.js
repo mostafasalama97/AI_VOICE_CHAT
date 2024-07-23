@@ -5,8 +5,7 @@ recognition.maxAlternatives = 1;
 
 recognition.onresult = async (event) => {
     const transcript = event.results[0][0].transcript.trim();
-    document.getElementById('transcript').textContent = 'You: ' + transcript;
-    console.log('Transcript:', transcript);
+    appendMessage('You: ' + transcript, 'user-message');
 
     const requestPayload = { "sender": "user", "message": transcript };
     console.log('Request Payload:', JSON.stringify(requestPayload));
@@ -32,12 +31,12 @@ recognition.onresult = async (event) => {
         }
 
         const botResponse = data[0]?.text || "Sorry, I didn't get that.";
-        document.getElementById('response').textContent = 'Bot: ' + botResponse;
+        appendMessage('Bot: ' + botResponse, 'bot-message');
 
         speak(botResponse);
     } catch (error) {
         console.error('Fetch error:', error);
-        document.getElementById('response').textContent = 'Error: Failed to fetch response from server';
+        appendMessage('Error: Failed to fetch response from server', 'bot-message');
     }
 };
 
@@ -64,6 +63,15 @@ function speak(text) {
     const utterance = new SpeechSynthesisUtterance(text);
     utterance.lang = 'en-US';
     synth.speak(utterance);
+}
+
+function appendMessage(message, className) {
+    const chatLog = document.getElementById('chat-log');
+    const messageElement = document.createElement('div');
+    messageElement.textContent = message;
+    messageElement.className = className;
+    chatLog.appendChild(messageElement);
+    chatLog.scrollTop = chatLog.scrollHeight; // Scroll to the bottom
 }
 
 document.getElementById('record-button').addEventListener('click', startRecognition);

@@ -4,11 +4,25 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Rasa Voice Chat</title>
+    <style>
+        #chat-log {
+            border: 1px solid #ccc;
+            padding: 10px;
+            width: 300px;
+            height: 400px;
+            overflow-y: auto;
+        }
+        .user-message {
+            color: blue;
+        }
+        .bot-message {
+            color: green;
+        }
+    </style>
 </head>
 <body>
     <button id="record-button">Start Voice Recognition</button>
-    <div id="transcript"></div>
-    <div id="response"></div>
+    <div id="chat-log"></div>
 
     <script src="voice.js"></script>
 </body>
