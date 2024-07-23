@@ -20,15 +20,14 @@ nlu:
 - intent: goodbye
   examples: |
     - cu
-    - good by
-    - cee you later
+    - good bye
+    - see you later
     - good night
     - bye
     - goodbye
     - have a nice day
     - see you around
     - bye bye
-    - see you later
 
 - intent: affirm
   examples: |
@@ -79,8 +78,7 @@ nlu:
     - unhappy
     - not good
     - not very good
-    - extremly sad
-    - so saad
+    - extremely sad
     - so sad
 
 - intent: bot_challenge
@@ -89,3 +87,19 @@ nlu:
     - are you a human?
     - am I talking to a bot?
     - am I talking to a human?
+
+- intent: how_are_you
+  examples: |
+    - how are you
+    - How are you doing?
+    - What's up?
+    - How's it going?
+
+- intent: user_says_fine
+  examples: |
+    - I'm fine
+    - I am good
+    - I am doing well
+    - Doing good
+    - Everything is fine
+    - Fine, thank you

@@ -4,16 +4,20 @@ recognition.interimResults = false;
 recognition.maxAlternatives = 1;
 
 recognition.onresult = async (event) => {
-    const transcript = event.results[0][0].transcript;
+    const transcript = event.results[0][0].transcript.trim();
     document.getElementById('transcript').textContent = 'You: ' + transcript;
+    console.log('Transcript:', transcript);
+
+    const requestPayload = { "sender": "user", "message": transcript };
+    console.log('Request Payload:', JSON.stringify(requestPayload));
 
     try {
-        const response = await fetch('http://localhost:5006/webhooks/rest/webhook', {
+        const response = await fetch('http://localhost:5008/webhooks/rest/webhook', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
             },
-            body: JSON.stringify({ "sender": "user", "message": transcript })
+            body: JSON.stringify(requestPayload)
         });
 
         if (!response.ok) {
@@ -21,6 +25,12 @@ recognition.onresult = async (event) => {
         }
 
         const data = await response.json();
+        console.log('Data:', data);
+
+        if (data.length === 0) {
+            console.error('Received empty response:', data);
+        }
+
         const botResponse = data[0]?.text || "Sorry, I didn't get that.";
         document.getElementById('response').textContent = 'Bot: ' + botResponse;
 
@@ -50,7 +60,6 @@ function startRecognition() {
 }
 
 function speak(text) {
-    console.log('Speaking: ' + text);
     const synth = window.speechSynthesis;
     const utterance = new SpeechSynthesisUtterance(text);
     utterance.lang = 'en-US';
