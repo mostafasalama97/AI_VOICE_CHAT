@@ -5,12 +5,46 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Rasa Voice Chat</title>
     <style>
-        #chat-log {
-            border: 1px solid #ccc;
-            padding: 10px;
+        body {
+            font-family: Arial, sans-serif;
+        }
+        .chat-icon {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            width: 50px;
+            height: 50px;
+            cursor: pointer;
+        }
+        #chat-container {
+            position: fixed;
+            bottom: 80px;
+            right: 20px;
             width: 300px;
             height: 400px;
+            border: 1px solid #ccc;
+            display: none;
+            flex-direction: column;
+            background-color: white;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        #chat-header {
+            background-color: #007bff;
+            color: white;
+            padding: 10px;
+            text-align: center;
+        }
+        #chat-log {
+            flex: 1;
+            padding: 10px;
             overflow-y: auto;
+        }
+        #chat-input-container {
+            padding: 10px;
+            text-align: center;
+        }
+        #chat-input-container button {
+            margin: 5px;
         }
         .user-message {
             color: blue;
@@ -21,9 +55,22 @@
     </style>
 </head>
 <body>
-    <button id="record-button">Start Voice Recognition</button>
-    <div id="chat-log"></div>
+    <img src="chat-icon.png" alt="Chat Icon" class="chat-icon" id="chat-icon">
+    <div id="chat-container">
+        <div id="chat-header">Chat with us!</div>
+        <div id="chat-log"></div>
+        <div id="chat-input-container">
+            <button id="record-button-ar">Start Voice Recognition (Arabic)</button>
+            <button id="record-button-en">Start Voice Recognition (English)</button>
+        </div>
+    </div>
 
     <script src="voice.js"></script>
+    <script>
+        document.getElementById('chat-icon').addEventListener('click', function() {
+            document.getElementById('chat-container').style.display = 'flex';
+            document.getElementById('chat-log').innerHTML = '<div class="bot-message">Do you want to speak in Arabic or English?</div>';
+        });
+    </script>
 </body>
 </html>

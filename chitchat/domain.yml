@@ -9,11 +9,13 @@ intents:
   - mood_unhappy
   - bot_challenge
   - how_are_you
-  - user_says_fine  # Add the missing intent here
+  - user_says_fine
+  - user_ask_salary
 
 responses:
   utter_greet:
     - text: "Hello! How can I help you today?"
+    - text: "مرحبًا! كيف يمكنني مساعدتك اليوم؟"
 
   utter_cheer_up:
     - text: "Here is something to cheer you up:"
@@ -27,20 +29,33 @@ responses:
 
   utter_goodbye:
     - text: "Bye"
+    - text: "وداعا!"
 
   utter_iamabot:
     - text: "I am a bot, powered by Rasa."
 
   utter_how_are_you:
     - text: "I am good, thank you! How about you?"
+    - text: "أنا بخير، شكرًا لك! كيف حالك؟"
 
-  utter_user_says_fine:  # Optionally, add a response for this intent
+  utter_user_says_fine:
     - text: "I'm glad to hear that!"
+    - text: "هذا رائع!"
+
+  utter_user_ask_salary:
+    - text: "bad and good and excellent"
+    - text: "ان شاء الله! والف الف مبرووك ماكسيمم تن دايز"
 
 actions:
   - utter_greet
   - utter_how_are_you
+  - action_transformers_ner
+  - action_utter_greeting
+  - action_utter_goodbye
+  - action_utter_how_are_you
+  - action_utter_user_says_fine
+  - action_utter_user_ask_salary
 
 session_config:
-  session_expiration_time: 60  # Define session expiration time in minutes
+  session_expiration_time: 60
   carry_over_slots_to_new_session: true

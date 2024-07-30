@@ -1,18 +1,22 @@
 version: "3.1"
 
 stories:
+- story: greet user
+  steps:
+  - intent: greet
+  - action: action_utter_greeting
 
 - story: happy path
   steps:
   - intent: greet
-  - action: utter_greet
+  - action: action_utter_greeting
   - intent: mood_great
   - action: utter_happy
 
 - story: sad path 1
   steps:
   - intent: greet
-  - action: utter_greet
+  - action: action_utter_greeting
   - intent: mood_unhappy
   - action: utter_cheer_up
   - action: utter_did_that_help
@@ -22,21 +26,26 @@ stories:
 - story: sad path 2
   steps:
   - intent: greet
-  - action: utter_greet
+  - action: action_utter_greeting
   - intent: mood_unhappy
   - action: utter_cheer_up
   - action: utter_did_that_help
   - intent: deny
-  - action: utter_goodbye
+  - action: action_utter_goodbye
 
 - story: greet and ask how are you
   steps:
   - intent: greet
-  - action: utter_greet
+  - action: action_utter_greeting
   - intent: how_are_you
-  - action: utter_how_are_you
+  - action: action_utter_how_are_you
 
 - story: user says fine
   steps:
   - intent: user_says_fine
-  - action: utter_user_says_fine
+  - action: action_utter_user_says_fine
+
+- story: user ask salary
+  steps:
+  - intent: user_ask_salary
+  - action: action_utter_user_ask_salary

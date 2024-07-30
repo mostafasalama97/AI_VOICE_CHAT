@@ -16,6 +16,9 @@ nlu:
     - goodmorning
     - goodevening
     - good afternoon
+    - مرحبًا
+    - أهلا
+    - السلام عليكم
 
 - intent: goodbye
   examples: |
@@ -28,6 +31,9 @@ nlu:
     - have a nice day
     - see you around
     - bye bye
+    - وداعا
+    - إلى اللقاء
+    - مع السلامة
 
 - intent: affirm
   examples: |
@@ -94,6 +100,9 @@ nlu:
     - How are you doing?
     - What's up?
     - How's it going?
+    - كيف حالك؟
+    - كيف الحال؟
+    - كيف تجري الأمور؟
 
 - intent: user_says_fine
   examples: |
@@ -103,3 +112,13 @@ nlu:
     - Doing good
     - Everything is fine
     - Fine, thank you
+    - جيد
+    - بخير
+    - أنا بخير
+
+- intent: user_ask_salary
+  examples: |
+    - القبض امتى
+    - الراتب متى
+    - متى استلم الراتب
+    - موعد استلام الراتب

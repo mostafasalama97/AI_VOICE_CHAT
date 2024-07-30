@@ -1,13 +1,26 @@
+let currentLang = 'en-US'; // Default language
+
 const recognition = new (window.SpeechRecognition || window.webkitSpeechRecognition)();
-recognition.lang = 'en-US';
+console.log("recognition:", recognition);
 recognition.interimResults = false;
 recognition.maxAlternatives = 1;
+
+let voices = [];
+
+window.speechSynthesis.onvoiceschanged = () => {
+    voices = window.speechSynthesis.getVoices();
+    console.log("Available voices:", voices);
+};
 
 recognition.onresult = async (event) => {
     const transcript = event.results[0][0].transcript.trim();
     appendMessage('You: ' + transcript, 'user-message');
 
-    const requestPayload = { "sender": "user", "message": transcript };
+    const requestPayload = { 
+        "sender": "user", 
+        "message": transcript,
+        "metadata": { "lang": currentLang }
+    };
     console.log('Request Payload:', JSON.stringify(requestPayload));
 
     try {
@@ -18,7 +31,7 @@ recognition.onresult = async (event) => {
             },
             body: JSON.stringify(requestPayload)
         });
-
+        console.log('Response:', response);
         if (!response.ok) {
             throw new Error('Network response was not ok ' + response.statusText);
         }
@@ -32,8 +45,9 @@ recognition.onresult = async (event) => {
 
         const botResponse = data[0]?.text || "Sorry, I didn't get that.";
         appendMessage('Bot: ' + botResponse, 'bot-message');
+        console.log('Bot Response:', botResponse);
 
-        speak(botResponse);
+        speak(botResponse, currentLang);  // Ensure it speaks in the current language
     } catch (error) {
         console.error('Fetch error:', error);
         appendMessage('Error: Failed to fetch response from server', 'bot-message');
@@ -45,23 +59,33 @@ recognition.onspeechend = () => {
 };
 
 recognition.onend = () => {
-    document.getElementById('record-button').textContent = 'Start Voice Recognition';
+    updateButtonLabel();
 };
 
 recognition.onerror = (event) => {
     console.error('Error occurred in recognition: ' + event.error);
-    document.getElementById('record-button').textContent = 'Start Voice Recognition';
+    updateButtonLabel();
 };
 
-function startRecognition() {
+function startRecognition(lang) {
+    currentLang = lang;
+    recognition.lang = lang;
     recognition.start();
-    document.getElementById('record-button').textContent = 'Listening...';
+    updateButtonLabel();
 }
 
-function speak(text) {
+function speak(text, lang) {
     const synth = window.speechSynthesis;
     const utterance = new SpeechSynthesisUtterance(text);
-    utterance.lang = 'en-US';
+    utterance.lang = lang;
+
+    const selectedVoice = voices.find(voice => voice.lang === lang);
+    if (selectedVoice) {
+        utterance.voice = selectedVoice;
+    } else {
+        console.warn(`No voice found for language: ${lang}. Using default voice.`);
+    }
+
     synth.speak(utterance);
 }
 
@@ -74,4 +98,10 @@ function appendMessage(message, className) {
     chatLog.scrollTop = chatLog.scrollHeight; // Scroll to the bottom
 }
 
-document.getElementById('record-button').addEventListener('click', startRecognition);
+function updateButtonLabel() {
+    document.getElementById('record-button-ar').textContent = 'Start Voice Recognition (Arabic)';
+    document.getElementById('record-button-en').textContent = 'Start Voice Recognition (English)';
+}
+
+document.getElementById('record-button-ar').addEventListener('click', () => startRecognition('ar-SA'));
+document.getElementById('record-button-en').addEventListener('click', () => startRecognition('en-US'));
